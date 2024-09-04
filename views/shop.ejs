@@ -1,0 +1,69 @@
+<%- include('./partials/headerUser', { showNav: true }) %> <!-- Pass showNav as true -->
+
+<% if(success && success.length > 0){ %>
+    <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full min-h-screen flex items-start px-20 py-20">
+    <div class="w-1/4 flex flex-col items-start">
+        <div class="flex items-center gap-2">
+            <h3>Sort by</h3>
+            <form action="/shop">
+                <select class="border border-gray-300 px-2 py-1 rounded" name="sortby" id="sort">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
+        </div>
+        <nav class="flex flex-col mt-20 space-y-2">
+            <a href="" class="hover:underline">New Collection</a>
+            <a href="" class="hover:underline">All Products</a>
+            <a href="" class="hover:underline">Discounted Products</a>
+        </nav>
+        <div class="mt-32">
+            <h4 class="font-semibold mb-2">Filter by:</h4>
+            <a href="" class="block hover:underline">Availability</a>
+            <a href="" class="block hover:underline">Discount</a>
+        </div>
+    </div>
+    <div class="w-3/4 grid grid-cols-3 gap-8">
+        <% if(products && products.length > 0){ %>
+            <% products.forEach(product => { %>
+                <div class="flex flex-col">
+                    <div class="aspect-square overflow-hidden bg-gray-200 flex items-center justify-center">
+                        <% if (product.image) { %>
+                            <img class="w-full h-full object-cover" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+                        <% } else { %>
+                            <div class="w-full h-full bg-gray-200"></div>
+                        <% } %>
+                    </div>
+                    <div class="flex justify-between items-center px-4 py-3 <%= product.panelcolor ? `bg-[${product.panelcolor}]` : 'bg-white' %> <%= product.textcolor ? `text-[${product.textcolor}]` : 'text-black' %>">
+                        <div>
+                            <h3 class="font-bold text-lg"><%= product.name %></h3>
+                            <p class="text-base">₹ <%= product.price %></p>
+                            <% if (product.discount > 0) { %>
+                                <p class="text-base font-bold text-lg">Discounted price: ₹<%= product.discount %></p>
+                            <% } %>
+                            
+                        </div>
+                        <a class="w-8 h-8 flex items-center justify-center rounded-full bg-white text-black hover:bg-gray-100 transition-colors" href="/addtocart/<%= product._id %>">
+                            <p class="font-bold text-xl">+</p>
+                            <i class="ri-add-line text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No products available.</p>
+        <% } %>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>
+
+
+
